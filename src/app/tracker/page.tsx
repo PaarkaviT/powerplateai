@@ -171,12 +171,12 @@ export default function Tracker() {
   const proteinGoalDays = historyData.filter(d => Number(d.total_protein_g || 0) >= 100).length;
 
   const avgAchieved = (sugarStreakDays + proteinGoalDays) / 2;
-  let bannerGradient = 'from-orange-500 via-amber-550 to-orange-650 border-orange-400'; // Default orange (Moderate: 3-4 days)
+  let bannerGradient = 'from-orange-500 via-amber-500 to-orange-600 border-orange-400'; // Default orange (Moderate: 3-4 days)
   
   if (avgAchieved >= 5) {
-    bannerGradient = 'from-emerald-500 via-teal-550 to-emerald-650 border-emerald-400'; // Green (Healthy: 5+ days)
+    bannerGradient = 'from-emerald-600 via-teal-600 to-emerald-700 border-emerald-500'; // Green (Healthy: 5+ days)
   } else if (avgAchieved < 3) {
-    bannerGradient = 'from-rose-500 via-red-550 to-rose-650 border-rose-400'; // Red (Needs focus: 0-2 days)
+    bannerGradient = 'from-rose-500 via-red-600 to-rose-600 border-rose-400'; // Red (Needs focus: 0-2 days)
   }
 
   return (
