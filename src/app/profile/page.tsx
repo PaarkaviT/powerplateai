@@ -334,7 +334,7 @@ export default function Profile() {
                 onChange={(e) => setDiet(e.target.value)}
                 className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 focus:outline-none focus:ring-2 focus:ring-orange-500 dark:border-zinc-800 dark:bg-zinc-900 text-sm text-zinc-950 dark:text-zinc-50"
               >
-                <option value="omnivore">Nonvegetarian</option>
+                <option value="nonvegetarian">Nonvegetarian</option>
                 <option value="vegetarian">Vegetarian</option>
                 <option value="vegan">Vegan</option>
                 <option value="keto">Keto</option>
@@ -506,7 +506,7 @@ export default function Profile() {
                 onChange={(e) => setFamDiet(e.target.value)}
                 className="w-full px-4 py-2 rounded-xl border border-zinc-250 focus:outline-none focus:ring-2 focus:ring-orange-500 dark:border-zinc-800 dark:bg-zinc-800 text-xs"
               >
-                <option value="omnivore">Nonvegetarian</option>
+                <option value="nonvegetarian">Nonvegetarian</option>
                 <option value="vegetarian">Vegetarian</option>
                 <option value="vegan">Vegan</option>
                 <option value="keto">Keto</option>

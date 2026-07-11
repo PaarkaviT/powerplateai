@@ -46,7 +46,7 @@ export default function Onboarding() {
   ];
 
   const dietsList = [
-    { id: 'omnivore', label: 'Nonvegetarian', desc: 'Balanced standard diet. No restrictions.', icon: '🍽️' },
+    { id: 'nonvegetarian', label: 'Nonvegetarian', desc: 'Balanced standard diet. No restrictions.', icon: '🍽️' },
     { id: 'vegetarian', label: 'Vegetarian', desc: 'Plant-based with dairy. No meat.', icon: '🥦' },
     { id: 'vegan', label: 'Vegan', desc: 'Strictly plant-based. Zero animal products.', icon: '🌱' },
     { id: 'keto', label: 'Keto', desc: 'High-fat, very low-carbohydrate focus.', icon: '🥑' },

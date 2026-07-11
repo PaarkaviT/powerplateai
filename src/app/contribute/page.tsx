@@ -527,7 +527,7 @@ export default function Contribute() {
                   onChange={(e) => setDietaryTag(e.target.value)}
                   className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-850 dark:bg-zinc-850 text-xs focus:outline-none"
                 >
-                  <option value="omnivore">Nonvegetarian</option>
+                  <option value="nonvegetarian">Nonvegetarian</option>
                   <option value="vegetarian">Vegetarian</option>
                   <option value="vegan">Vegan</option>
                   <option value="keto">Keto</option>
