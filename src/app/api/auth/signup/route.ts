@@ -10,10 +10,11 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
     }
 
-    // Sign up the user in Supabase Auth
-    const { data, error } = await supabase.auth.signUp({
+    // Sign up the user in Supabase Auth using Admin API to auto-confirm email and bypass SMTP rate limits
+    const { data, error } = await supabase.auth.admin.createUser({
       email,
       password,
+      email_confirm: true,
     });
 
     if (error) {
