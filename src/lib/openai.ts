@@ -4,7 +4,7 @@ import { supabase } from './supabase';
 const openaiKey = process.env.OPENAI_API_KEY;
 
 export const openai = new OpenAI({
-  apiKey: openaiKey || '',
+  apiKey: openaiKey || 'dummy-key-for-build-validation',
 });
 
 export async function autoTagRecipe(
