@@ -148,6 +148,8 @@ export default function Feed() {
 
   const filterChips = [
     { label: 'All', value: 'All' },
+    { label: 'Vegetarian', value: 'vegetarian' },
+    { label: 'Non-Vegetarian', value: 'nonvegetarian' },
     { label: 'Vegan', value: 'vegan' },
     { label: 'Keto', value: 'keto' },
     { label: 'Jain', value: 'jain' },
@@ -209,7 +211,7 @@ export default function Feed() {
         let finalMaxCal = activeMaxCal;
 
         if (selectedChip !== 'All') {
-          if (['vegan', 'keto', 'jain', 'halal'].includes(selectedChip)) {
+          if (['vegan', 'keto', 'jain', 'halal', 'vegetarian', 'nonvegetarian'].includes(selectedChip)) {
             finalDiet = selectedChip;
           } else if (selectedChip === 'under-400') {
             finalMaxCal = 400;
@@ -624,7 +626,7 @@ export default function Feed() {
                   Dietary Preference
                 </label>
                 <div className="grid grid-cols-3 gap-2">
-                  {['vegan', 'vegetarian', 'keto', 'gluten-free', 'jain', 'halal'].map((diet) => {
+                  {['vegan', 'vegetarian', 'nonvegetarian', 'keto', 'gluten-free', 'jain', 'halal'].map((diet) => {
                     const isSelected = tempDiet === diet;
                     return (
                       <button
@@ -636,7 +638,7 @@ export default function Feed() {
                             : 'bg-zinc-50 border-zinc-200 text-zinc-600 hover:border-zinc-300 dark:bg-zinc-800 dark:border-zinc-850 dark:text-zinc-400'
                         }`}
                       >
-                        {diet.replace('-', ' ')}
+                        {diet === 'nonvegetarian' ? 'non-vegetarian' : diet.replace('-', ' ')}
                       </button>
                     );
                   })}
