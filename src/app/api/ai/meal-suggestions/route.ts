@@ -69,7 +69,7 @@ Recent meals eaten in last 3 days:
 ${recentMealsEaten.length > 0 ? recentMealsEaten.join(', ') : 'None logged'}`;
 
     const response = await openai.chat.completions.create({
-      model: 'gemini-2.5-pro',
+      model: 'gemini-2.5-flash',
       messages: [
         { role: 'system', content: systemPrompt },
         { role: 'user', content: userContent },

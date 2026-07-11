@@ -47,7 +47,7 @@ export async function POST(req: Request) {
       "Ensure all numeric nutrition values are realistic and sensible.";
 
     const response = await openai.chat.completions.create({
-      model: 'gemini-2.5-pro',
+      model: 'gemini-2.5-flash',
       messages: [
         { role: 'system', content: systemPrompt },
         { role: 'user', content: `Generate a recipe for: ${concept}` },

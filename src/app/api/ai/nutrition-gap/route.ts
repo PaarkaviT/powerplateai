@@ -53,7 +53,7 @@ ${JSON.stringify(logs || [])}`;
 
     // 4. Query OpenAI
     const response = await openai.chat.completions.create({
-      model: 'gemini-2.5-pro',
+      model: 'gemini-2.5-flash',
       messages: [
         { role: 'system', content: systemPrompt },
         { role: 'user', content: userContent },

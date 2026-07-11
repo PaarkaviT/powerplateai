@@ -25,7 +25,7 @@ Ingredients: ${JSON.stringify(ingredients)}
 Steps: ${steps.join('\n')}`;
 
     const response = await openai.chat.completions.create({
-      model: 'gemini-2.5-pro', // Using Gemini 2.5 Pro via OpenAI compatible endpoint
+      model: 'gemini-2.5-flash', // Using Gemini 2.5 Flash via OpenAI compatible endpoint
       messages: [
         { role: 'system', content: systemPrompt },
         { role: 'user', content: userContent },
@@ -91,7 +91,7 @@ Ingredients: ${JSON.stringify(ingredients)}
 Steps: ${steps.join('\n')}`;
 
   const response = await openai.chat.completions.create({
-    model: 'gemini-2.5-pro',
+    model: 'gemini-2.5-flash',
     messages: [
       { role: 'system', content: systemPrompt },
       { role: 'user', content: userContent },
