@@ -613,7 +613,7 @@ export default function RecipeDetail() {
               {/* Email */}
               <a
                 href={`mailto:?subject=${encodeURIComponent(`Healthy Recipe: ${recipe.name}`)}&body=${encodeURIComponent(`Check out this healthy recipe on PowerPlate:\n\n${recipe.name}\n\nLink: ${typeof window !== 'undefined' ? window.location.href : ''}`)}`}
-                className="w-full py-2.5 px-4 bg-zinc-805 hover:bg-zinc-900 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                className="w-full py-2.5 px-4 bg-zinc-100 hover:bg-zinc-200 text-zinc-800 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-200 font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
               >
                 <span>✉️</span> Share via Email
               </a>
@@ -633,10 +633,22 @@ export default function RecipeDetail() {
               </button>
             </div>
 
-            <div className="pt-2 flex justify-center gap-3 border-t border-zinc-50 dark:border-zinc-850/50">
-              <span className="text-[10px] text-zinc-400">Mock Social integrations:</span>
-              <button onClick={() => toast('Shared to Facebook! 👥', 'success')} className="text-[10px] text-orange-600 hover:underline">Facebook</button>
-              <button onClick={() => toast('Shared to Instagram Story! 📸', 'success')} className="text-[10px] text-orange-600 hover:underline">Instagram</button>
+            <div className="pt-3.5 flex flex-col items-center gap-2 border-t border-zinc-100 dark:border-zinc-850/50">
+              <span className="text-[10px] uppercase tracking-wider font-extrabold text-zinc-400">Mock Social integrations</span>
+              <div className="flex gap-2">
+                <button 
+                  onClick={() => toast('Shared to Facebook! 👥', 'success')} 
+                  className="px-2.5 py-1 bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-850 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 font-bold rounded-lg text-[10px] transition-colors cursor-pointer"
+                >
+                  📘 Facebook
+                </button>
+                <button 
+                  onClick={() => toast('Shared to Instagram Story! 📸', 'success')} 
+                  className="px-2.5 py-1 bg-zinc-50 hover:bg-zinc-100 dark:bg-zinc-850 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 font-bold rounded-lg text-[10px] transition-colors cursor-pointer"
+                >
+                  📸 Instagram
+                </button>
+              </div>
             </div>
           </div>
         </div>
