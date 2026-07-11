@@ -613,7 +613,8 @@ export default function RecipeDetail() {
               {/* Email */}
               <a
                 href={`mailto:?subject=${encodeURIComponent(`Healthy Recipe: ${recipe.name}`)}&body=${encodeURIComponent(`Check out this healthy recipe on PowerPlate:\n\n${recipe.name}\n\nLink: ${typeof window !== 'undefined' ? window.location.href : ''}`)}`}
-                className="w-full py-2.5 px-4 bg-zinc-100 hover:bg-zinc-200 text-zinc-800 dark:bg-zinc-800 dark:hover:bg-zinc-700 dark:text-zinc-200 font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                style={{ backgroundColor: '#e4e4e7', color: '#18181b' }}
+                className="w-full py-2.5 px-4 font-bold rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
               >
                 <span>✉️</span> Share via Email
               </a>
