@@ -13,6 +13,7 @@ export default function Planner() {
   // Weekly calorie target limit from profile
   const [calorieTarget, setCalorieTarget] = useState(2000);
   const [isPremium, setIsPremium] = useState(false);
+  const [selectedSummaryDay, setSelectedSummaryDay] = useState<string>('Mon');
 
   // Modal Controls
   const [isNewPlanOpen, setIsNewPlanOpen] = useState(false);
@@ -209,25 +210,32 @@ export default function Planner() {
   // Get active items mapped by Mon-Sun and meal slots
   const planItems = activePlan?.meal_plan_items || [];
   
-  // Calculate weekly totals
-  let totalCalories = 0;
+  // Calculate daily calorie totals
+  const dailyCalories: { [key: string]: number } = {};
+  daysOfWeek.forEach((d) => {
+    dailyCalories[d] = 0;
+  });
+
   planItems.forEach((item: any) => {
     const nutrition = item.recipes?.nutrition as any;
-    if (nutrition?.calories) {
-      totalCalories += Number(nutrition.calories);
+    if (nutrition?.calories && item.day) {
+      const d = item.day;
+      if (dailyCalories[d] !== undefined) {
+        dailyCalories[d] += Number(nutrition.calories);
+      }
     }
   });
 
-  const avgCaloriesPerDay = Math.round(totalCalories / 7);
+  const selectedDayCalories = dailyCalories[selectedSummaryDay] || 0;
 
-  // Color code calorie summary bar based on 10% daily target limit
-  const isWithinLimit = Math.abs(avgCaloriesPerDay - calorieTarget) / calorieTarget <= 0.10;
-  const isOverLimit = avgCaloriesPerDay > calorieTarget * 1.10;
+  // Color code calorie summary bar based on 10% daily target limit for the selected day
+  const isWithinLimit = Math.abs(selectedDayCalories - calorieTarget) / calorieTarget <= 0.10;
+  const isOverLimit = selectedDayCalories > calorieTarget * 1.10;
   
-  let summaryColorClass = 'bg-zinc-100 text-zinc-800 dark:bg-zinc-900 dark:text-zinc-300';
-  if (totalCalories > 0) {
-    if (isWithinLimit) summaryColorClass = 'bg-emerald-50 text-emerald-800 border-emerald-250 dark:bg-emerald-950/20 dark:text-emerald-300';
-    else if (isOverLimit) summaryColorClass = 'bg-rose-50 text-rose-800 border-rose-250 dark:bg-rose-950/20 dark:text-rose-300';
+  let summaryColorClass = 'bg-zinc-150 text-zinc-800 dark:bg-zinc-900 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-800';
+  if (selectedDayCalories > 0) {
+    if (isWithinLimit) summaryColorClass = 'bg-emerald-50 text-emerald-800 border-emerald-250 dark:bg-emerald-950/20 dark:text-emerald-300 border border-emerald-500';
+    else if (isOverLimit) summaryColorClass = 'bg-rose-50 text-rose-800 border-rose-250 dark:bg-rose-950/20 dark:text-rose-300 border border-rose-500';
   }
 
   return (
@@ -288,12 +296,36 @@ export default function Planner() {
             <div className="min-w-[850px] divide-y divide-zinc-100 dark:divide-zinc-800">
               
               {/* Grid Header Days */}
-              <div className="grid grid-cols-7 bg-zinc-50 dark:bg-zinc-900 text-center py-3 text-xs font-black text-zinc-500 uppercase tracking-wider">
-                {daysOfWeek.map((day) => (
-                  <div key={day} className="border-r last:border-r-0 border-zinc-100 dark:border-zinc-800/50">
-                    {day}
-                  </div>
-                ))}
+              <div className="grid grid-cols-7 bg-zinc-50 dark:bg-zinc-900 text-center text-xs font-black text-zinc-500 uppercase tracking-wider">
+                {daysOfWeek.map((day) => {
+                  const dayCal = dailyCalories[day] || 0;
+                  const isSelected = selectedSummaryDay === day;
+                  return (
+                    <button
+                      key={day}
+                      type="button"
+                      onClick={() => setSelectedSummaryDay(day)}
+                      className={`py-3 border-r last:border-r-0 border-zinc-100 dark:border-zinc-800 flex flex-col items-center justify-center gap-1 cursor-pointer transition-all ${
+                        isSelected 
+                          ? 'bg-orange-50/50 dark:bg-orange-950/20 text-orange-600'
+                          : 'hover:bg-zinc-100/50 dark:hover:bg-zinc-800/30'
+                      }`}
+                    >
+                      <span>{day}</span>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-extrabold ${
+                        dayCal === 0 
+                          ? 'text-zinc-400' 
+                          : dayCal > calorieTarget * 1.10 
+                          ? 'bg-rose-100 text-rose-700 dark:bg-rose-950/40 dark:text-rose-400'
+                          : Math.abs(dayCal - calorieTarget) / calorieTarget <= 0.10
+                          ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400'
+                          : 'bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400'
+                      }`}>
+                        {dayCal > 0 ? `${dayCal} kcal` : '0 kcal'}
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
 
               {/* Grid Rows Slots */}
@@ -375,16 +407,16 @@ export default function Planner() {
             </div>
           </div>
 
-          {/* WEEKLY CALORIE SUMMARY BAR */}
+          {/* DAILY CALORIE SUMMARY BAR */}
           <div className={`p-5 rounded-3xl border text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-3 transition-colors ${summaryColorClass}`}>
             <div>
-              <p className="text-xs font-bold uppercase tracking-wider opacity-80">Weekly Calories Summary</p>
+              <p className="text-xs font-bold uppercase tracking-wider opacity-80">Daily Calorie Summary ({selectedSummaryDay})</p>
               <h3 className="text-lg font-black mt-1">
-                Week Total: {totalCalories.toLocaleString()} kcal | Avg: {avgCaloriesPerDay.toLocaleString()} kcal/day
+                Day Total: {selectedDayCalories.toLocaleString()} kcal | Daily Target: {calorieTarget.toLocaleString()} kcal
               </h3>
             </div>
             <div className="px-4 py-2 rounded-xl text-xs font-black bg-white/20 dark:bg-black/20 border border-white/10">
-              {avgCaloriesPerDay === 0 ? (
+              {selectedDayCalories === 0 ? (
                 'Add recipes to track limit'
               ) : isWithinLimit ? (
                 'On track with target (±10%)'
