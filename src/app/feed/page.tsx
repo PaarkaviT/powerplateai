@@ -430,29 +430,38 @@ export default function Feed() {
                 key={idx}
                 onClick={() => item.recipe_id && router.push(`/recipes/${item.recipe_id}`)}
                 disabled={!item.recipe_id}
-                className="flex-shrink-0 w-72 p-4 bg-gradient-to-tr from-orange-50/50 to-amber-50/30 dark:from-orange-950/20 dark:to-zinc-900 border border-orange-100/50 dark:border-orange-900/20 rounded-2xl flex flex-col justify-between text-left hover:border-orange-300 dark:hover:border-orange-800 transition-colors"
+                className="flex-shrink-0 w-80 p-3 bg-white dark:bg-zinc-850 border border-zinc-150 dark:border-zinc-800 rounded-2xl flex gap-3 text-left hover:border-orange-300 dark:hover:border-orange-800 transition-colors"
               >
-                <div>
-                  <div className="flex justify-between items-center mb-1">
-                    <span className="text-[10px] uppercase tracking-wider font-extrabold text-orange-700 dark:text-orange-400 px-2 py-0.5 rounded bg-orange-100/60 dark:bg-orange-900/40">
-                      {item.meal_slot}
-                    </span>
-                    <span className="text-xs font-bold text-zinc-500 dark:text-zinc-400">
-                      {item.estimated_calories} kcal
-                    </span>
-                  </div>
-                  <h4 className="text-sm font-bold text-zinc-800 dark:text-zinc-150 line-clamp-1">
-                    {item.name}
-                  </h4>
-                  <p className="text-[11px] text-zinc-500 dark:text-zinc-400 line-clamp-2 mt-1">
-                    {item.reason}
-                  </p>
-                </div>
-                {item.recipe_id && (
-                  <span className="text-[10px] font-extrabold text-orange-600 dark:text-orange-400 mt-2 flex items-center gap-0.5 hover:underline">
-                    View Recipe →
-                  </span>
+                {item.image_url && (
+                  <img
+                    src={item.image_url}
+                    alt={item.name}
+                    className="w-20 h-20 rounded-xl object-cover flex-shrink-0"
+                  />
                 )}
+                <div className="flex-1 flex flex-col justify-between min-w-0">
+                  <div>
+                    <div className="flex justify-between items-center mb-1 gap-1">
+                      <span className="text-[9px] uppercase tracking-wider font-extrabold text-orange-700 dark:text-orange-400 px-1.5 py-0.5 rounded bg-orange-100/60 dark:bg-orange-900/40">
+                        {item.meal_slot}
+                      </span>
+                      <span className="text-[10px] font-bold text-zinc-500 dark:text-zinc-400">
+                        {item.estimated_calories} kcal
+                      </span>
+                    </div>
+                    <h4 className="text-xs font-bold text-zinc-850 dark:text-zinc-100 line-clamp-1">
+                      {item.name}
+                    </h4>
+                    <p className="text-[10px] text-zinc-500 dark:text-zinc-400 line-clamp-2 mt-0.5 leading-snug">
+                      {item.reason}
+                    </p>
+                  </div>
+                  {item.recipe_id && (
+                    <span className="text-[9px] font-extrabold text-orange-600 dark:text-orange-400 mt-1 flex items-center gap-0.5 hover:underline">
+                      View Recipe →
+                    </span>
+                  )}
+                </div>
               </button>
             ))}
           </div>

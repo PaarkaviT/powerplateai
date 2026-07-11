@@ -89,16 +89,23 @@ ${recentMealsEaten.length > 0 ? recentMealsEaten.join(', ') : 'None logged'}`;
     const suggestionsWithMatchedIds = await Promise.all(
       suggestionsList.map(async (s: any) => {
         let recipeId = null;
+        let imageUrl = null;
         if (s.name) {
           const { data: matches } = await supabase
             .from('recipes')
-            .select('id')
+            .select('id, image_url')
             .ilike('name', `%${s.name}%`)
             .limit(1);
 
           if (matches && matches.length > 0) {
             recipeId = matches[0].id;
+            imageUrl = matches[0].image_url;
           }
+        }
+
+        // Fallback to Pollinations AI generator if no database image is set
+        if (!imageUrl && s.name) {
+          imageUrl = `https://image.pollinations.ai/prompt/Close%20up%20shot%20of%20${encodeURIComponent(s.name)}%2C%20realistic%20food%20photo%2C%20delicious?width=400&height=300&nologo=true`;
         }
 
         return {
@@ -107,6 +114,7 @@ ${recentMealsEaten.length > 0 ? recentMealsEaten.join(', ') : 'None logged'}`;
           estimated_calories: s.estimated_calories,
           meal_slot: s.meal_slot,
           recipe_id: recipeId,
+          image_url: imageUrl,
         };
       })
     );
