@@ -1,0 +1,17 @@
+{
+  "name": "Power Plate",
+  "short_name": "PowerPlate",
+  "description": "AI-powered Personalized Nutrition & Meal Planning",
+  "start_url": "/feed",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#16a34a",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}
