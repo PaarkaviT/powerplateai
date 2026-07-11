@@ -78,7 +78,7 @@ export default function Tracker() {
 
   const handleDeleteLog = async (logId: string) => {
     try {
-      await apiFetch(`/api/meal-logs?id=${logId}`, { method: 'DELETE' });
+      await apiFetch(`/api/meal-logs/${logId}`, { method: 'DELETE' });
       toast('Meal log removed', 'success');
       loadTrackerData(); // Auto-refresh totals
     } catch (err: any) {
