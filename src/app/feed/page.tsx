@@ -12,6 +12,31 @@ export default function Feed() {
   const [aiSuggestions, setAiSuggestions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingSuggestions, setLoadingSuggestions] = useState(true);
+  const [generatingConcept, setGeneratingConcept] = useState<string | null>(null);
+
+  const handleSuggestionClick = async (item: any) => {
+    if (item.recipe_id) {
+      router.push(`/recipes/${item.recipe_id}`);
+      return;
+    }
+
+    setGeneratingConcept(item.name);
+    try {
+      const response = await apiFetch('/api/recipes/ai-generate-and-save', {
+        method: 'POST',
+        body: JSON.stringify({ concept: item.name }),
+      });
+      
+      toast('AI has generated and saved this recipe! 🥗', 'success');
+      // Redirect to the new recipe details page
+      router.push(`/recipes/${response.recipe_id}`);
+    } catch (err: any) {
+      console.error('Failed to generate and save recipe concept:', err);
+      toast(err.message || 'Failed to auto-generate recipe concept', 'error');
+    } finally {
+      setGeneratingConcept(null);
+    }
+  };
   
   // Search & Filter State
   const [searchQuery, setSearchQuery] = useState('');
@@ -428,10 +453,16 @@ export default function Feed() {
             {aiSuggestions.map((item, idx) => (
               <button
                 key={idx}
-                onClick={() => item.recipe_id && router.push(`/recipes/${item.recipe_id}`)}
-                disabled={!item.recipe_id}
-                className="flex-shrink-0 w-80 p-3 bg-white dark:bg-zinc-850 border border-zinc-150 dark:border-zinc-800 rounded-2xl flex gap-3 text-left hover:border-orange-300 dark:hover:border-orange-800 transition-colors"
+                onClick={() => handleSuggestionClick(item)}
+                disabled={generatingConcept !== null}
+                className="flex-shrink-0 w-80 p-3 bg-white dark:bg-zinc-850 border border-zinc-150 dark:border-zinc-800 rounded-2xl flex gap-3 text-left hover:border-orange-300 dark:hover:border-orange-800 transition-colors relative"
               >
+                {generatingConcept === item.name && (
+                  <div className="absolute inset-0 bg-white/80 dark:bg-zinc-850/80 rounded-2xl flex items-center justify-center gap-2 z-10">
+                    <div className="w-4 h-4 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
+                    <span className="text-[10px] font-bold text-orange-600 dark:text-orange-400">Cooking with AI...</span>
+                  </div>
+                )}
                 <img
                   src={item.image_url || `https://image.pollinations.ai/prompt/Close%20up%20shot%20of%20${encodeURIComponent(item.name || 'food')}%2C%20realistic%20food%20photo%2C%20delicious?width=400&height=300&nologo=true`}
                   alt={item.name}
@@ -454,11 +485,9 @@ export default function Feed() {
                       {item.reason}
                     </p>
                   </div>
-                  {item.recipe_id && (
-                    <span className="text-[9px] font-extrabold text-orange-600 dark:text-orange-400 mt-1 flex items-center gap-0.5 hover:underline">
-                      View Recipe →
-                    </span>
-                  )}
+                  <span className="text-[9px] font-extrabold text-orange-600 dark:text-orange-400 mt-1 flex items-center gap-0.5 hover:underline">
+                    View Recipe →
+                  </span>
                 </div>
               </button>
             ))}
