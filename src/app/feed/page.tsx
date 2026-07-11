@@ -432,13 +432,11 @@ export default function Feed() {
                 disabled={!item.recipe_id}
                 className="flex-shrink-0 w-80 p-3 bg-white dark:bg-zinc-850 border border-zinc-150 dark:border-zinc-800 rounded-2xl flex gap-3 text-left hover:border-orange-300 dark:hover:border-orange-800 transition-colors"
               >
-                {item.image_url && (
-                  <img
-                    src={item.image_url}
-                    alt={item.name}
-                    className="w-20 h-20 rounded-xl object-cover flex-shrink-0"
-                  />
-                )}
+                <img
+                  src={item.image_url || `https://image.pollinations.ai/prompt/Close%20up%20shot%20of%20${encodeURIComponent(item.name || 'food')}%2C%20realistic%20food%20photo%2C%20delicious?width=400&height=300&nologo=true`}
+                  alt={item.name}
+                  className="w-20 h-20 rounded-xl object-cover flex-shrink-0"
+                />
                 <div className="flex-1 flex flex-col justify-between min-w-0">
                   <div>
                     <div className="flex justify-between items-center mb-1 gap-1">
