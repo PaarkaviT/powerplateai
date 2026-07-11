@@ -17,7 +17,7 @@ export default function Profile() {
   const [family, setFamily] = useState<any[]>([]);
   const [loadingFamily, setLoadingFamily] = useState(true);
   const [famName, setFamName] = useState('');
-  const [famDiet, setFamDiet] = useState('omnivore');
+  const [famDiet, setFamDiet] = useState('nonvegetarian');
   const [famDiabetic, setFamDiabetic] = useState(false);
   const [famHypertension, setFamHypertension] = useState(false);
   const [addingFam, setAddingFam] = useState(false);
@@ -29,7 +29,7 @@ export default function Profile() {
   const [height, setHeight] = useState('');
   const [weight, setWeight] = useState('');
   const [activityLevel, setActivityLevel] = useState('sedentary');
-  const [diet, setDiet] = useState('omnivore');
+  const [diet, setDiet] = useState('nonvegetarian');
   const [allergiesText, setAllergiesText] = useState('');
   const [regionCuisine, setRegionCuisine] = useState('north-indian');
   
@@ -66,7 +66,7 @@ export default function Profile() {
         setHeight(data.height_cm !== null ? String(data.height_cm) : '');
         setWeight(data.weight_kg !== null ? String(data.weight_kg) : '');
         setActivityLevel(data.activity_level || 'sedentary');
-        setDiet(data.dietary_preference || 'omnivore');
+        setDiet(data.dietary_preference || 'nonvegetarian');
         setAllergiesText(data.allergies ? data.allergies.join(', ') : '');
         setRegionCuisine(data.region_cuisine || 'north-indian');
         setDiabetic(!!data.diabetic);
@@ -104,7 +104,7 @@ export default function Profile() {
       toast(`Added family member: ${newFam.name}! 🥗`, 'success');
       setFamily((prev) => [...prev, newFam]);
       setFamName('');
-      setFamDiet('omnivore');
+      setFamDiet('nonvegetarian');
       setFamDiabetic(false);
       setFamHypertension(false);
     } catch (err: any) {

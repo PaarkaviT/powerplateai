@@ -42,7 +42,7 @@ export async function POST(req: Request) {
       .insert({
         parent_id: user.id,
         name: name.trim(),
-        dietary_preference: dietary_preference || 'omnivore',
+        dietary_preference: dietary_preference || 'nonvegetarian',
         diabetic: !!diabetic,
         hypertension: !!hypertension,
         allergies: allergies || []

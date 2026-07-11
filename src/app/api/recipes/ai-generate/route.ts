@@ -40,7 +40,7 @@ export async function POST(req: Request) {
       "  \"bmi_range\": \"all\",\n" +
       "  \"gender_note\": \"general\"\n" +
       "}\n\n" +
-      "Rule for dietary_tag: choose one of: omnivore, vegetarian, vegan, jain, halal, keto, gluten-free.\n" +
+      "Rule for dietary_tag: choose one of: nonvegetarian, vegetarian, vegan, jain, halal, keto, gluten-free.\n" +
       "Rule for glycemic_index: choose one of: low, medium, high.\n" +
       "Rule for bmi_range: choose one of: underweight, normal, overweight, obese, all.\n" +
       "Rule for gender_note: choose one of: general, pregnancy, male.\n" +

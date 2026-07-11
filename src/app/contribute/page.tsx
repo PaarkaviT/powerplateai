@@ -31,7 +31,7 @@ export default function Contribute() {
   const [sodium, setSodium] = useState('300');
 
   // Metadata tags
-  const [dietaryTag, setDietaryTag] = useState('omnivore');
+  const [dietaryTag, setDietaryTag] = useState('nonvegetarian');
   const [glycemicIndex, setGlycemicIndex] = useState('medium');
   const [bmiRange, setBmiRange] = useState('all');
   const [genderNote, setGenderNote] = useState('general');
@@ -74,7 +74,7 @@ export default function Contribute() {
       setSugar(String(data.sugar_g || '5'));
       setSodium(String(data.sodium_mg || '300'));
       
-      setDietaryTag(data.dietary_tag || 'omnivore');
+      setDietaryTag(data.dietary_tag || 'nonvegetarian');
       setGlycemicIndex(data.glycemic_index || 'medium');
       setBmiRange(data.bmi_range || 'all');
       setGenderNote(data.gender_note || 'general');

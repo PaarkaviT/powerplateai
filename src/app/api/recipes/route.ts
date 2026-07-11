@@ -189,7 +189,7 @@ export async function GET(req: Request) {
         const userDiet = profile.dietary_preference.toLowerCase();
         const recipeDiet = r.dietary_tag ? r.dietary_tag.toLowerCase() : '';
         
-        if (userDiet === 'omnivore') {
+        if (userDiet === 'nonvegetarian') {
           match_score += 50;
         } else if (userDiet === 'vegetarian') {
           if (['vegetarian', 'vegan', 'jain'].includes(recipeDiet)) {
@@ -332,7 +332,7 @@ export async function POST(req: Request) {
         nutrition,
         prep_time_mins: prep_time_mins ? Number(prep_time_mins) : 30,
         servings: servings ? Number(servings) : 1,
-        dietary_tag: dietary_tag || 'omnivore',
+        dietary_tag: dietary_tag || 'nonvegetarian',
         tags: tags || [],
         glycemic_index: glycemic_index || 'medium',
         sugar_g: sugar_g ? Number(sugar_g) : 0,

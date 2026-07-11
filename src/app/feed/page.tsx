@@ -59,10 +59,10 @@ export default function Feed() {
 
     // Recalculate score for family member:
     let score = 0;
-    const diet = selectedMember.dietary_preference || 'omnivore';
+    const diet = selectedMember.dietary_preference || 'nonvegetarian';
 
     // 1. Dietary Match (50% max)
-    if (diet === 'omnivore') {
+    if (diet === 'nonvegetarian') {
       score += 50;
     } else {
       const recipeDiet = (recipe.dietary_tag || '').toLowerCase();
@@ -152,7 +152,7 @@ export default function Feed() {
       .then((profile) => {
         if (profile) {
           setIsUserPremium(!!profile.is_premium);
-          if (profile.dietary_preference && profile.dietary_preference !== 'omnivore') {
+          if (profile.dietary_preference && profile.dietary_preference !== 'nonvegetarian') {
             setActiveDiet(profile.dietary_preference);
             setTempDiet(profile.dietary_preference);
           }

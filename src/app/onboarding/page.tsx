@@ -22,7 +22,7 @@ export default function Onboarding() {
     diabetic: false,
     hypertension: false,
     pregnancy: false,
-    dietary_preference: 'omnivore',
+    dietary_preference: 'nonvegetarian',
     allergies: [] as string[],
     custom_allergies: '',
   });

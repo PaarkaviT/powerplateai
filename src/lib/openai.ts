@@ -44,7 +44,7 @@ Steps: ${steps.join('\n')}`;
     const dietaryTags: string[] = data.dietary_tags || [];
     // The recipes table has "dietary_tag" (a single text field) and "tags" (a text array).
     // We map the first matched tag to dietary_tag, and keep the whole list in tags.
-    const primaryDietaryTag = dietaryTags.length > 0 ? dietaryTags[0] : 'omnivore';
+    const primaryDietaryTag = dietaryTags.length > 0 ? dietaryTags[0] : 'nonvegetarian';
     const glycemicIndex = (data.glycemic_index_estimate || 'medium').toLowerCase();
 
     const { error } = await supabase
@@ -79,7 +79,7 @@ export async function suggestRecipeTags(
 }> {
   const systemPrompt = 
     "You are a nutrition expert. Given a recipe's name, ingredients, and steps, return a JSON object with: " +
-    "1. dietary_tag (choose one: omnivore, vegetarian, vegan, jain, halal, keto, gluten-free)\n" +
+    "1. dietary_tag (choose one: nonvegetarian, vegetarian, vegan, jain, halal, keto, gluten-free)\n" +
     "2. tags (array of strings, e.g. ['breakfast', 'high-protein', 'quick'])\n" +
     "3. glycemic_index (choose one: low, medium, high)\n" +
     "4. nutrition_summary (one-sentence overview)\n" +
