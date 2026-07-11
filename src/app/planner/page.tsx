@@ -291,8 +291,116 @@ export default function Planner() {
         </div>
       ) : (
         <div className="space-y-6">
-          {/* Main 7-Column Layout Calendar grid */}
-          <div className="overflow-x-auto border border-zinc-200/60 dark:border-zinc-800/80 rounded-3xl bg-white dark:bg-zinc-900 shadow-sm">
+          {/* Mobile Day Selector Tabs */}
+          <div className="flex justify-between items-center gap-1 p-1 bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800/85 rounded-2xl md:hidden overflow-x-auto">
+            {daysOfWeek.map((day) => {
+              const isActive = selectedSummaryDay === day;
+              const dayCal = dailyCalories[day] || 0;
+              return (
+                <button
+                  key={day}
+                  type="button"
+                  onClick={() => setSelectedSummaryDay(day)}
+                  className={`flex-1 py-2 px-0.5 rounded-xl flex flex-col items-center justify-center gap-1 transition-all min-w-[42px] cursor-pointer ${
+                    isActive
+                      ? 'bg-orange-600 text-white font-black shadow-sm'
+                      : 'bg-white dark:bg-zinc-850 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-650 dark:text-zinc-400 font-bold'
+                  }`}
+                >
+                  <span className="text-[11px] uppercase tracking-tight">{day}</span>
+                  <span className={`text-[8px] font-black px-1 py-0.2 rounded ${
+                    isActive 
+                      ? 'bg-white/20 text-white' 
+                      : dayCal > 0 
+                      ? 'bg-orange-50 text-orange-600 dark:bg-orange-950/40 dark:text-orange-400' 
+                      : 'text-zinc-400'
+                  }`}>
+                    {dayCal > 0 ? `${dayCal}k` : '0k'}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Mobile Single Day Schedule View */}
+          <div className="space-y-4 md:hidden">
+            {mealSlots.map((slot) => {
+              const item = planItems.find(
+                (pi: any) => pi.day_of_week === selectedSummaryDay && pi.meal_slot.toLowerCase() === slot.toLowerCase()
+              );
+              
+              return (
+                <div 
+                  key={slot} 
+                  className="bg-white dark:bg-zinc-900 border border-zinc-150 dark:border-zinc-850/60 rounded-3xl p-4 shadow-sm flex items-center justify-between gap-4"
+                >
+                  <div className="flex-1 min-w-0">
+                    <span className="text-[9px] uppercase tracking-wider font-extrabold text-orange-700 dark:text-orange-400 bg-orange-100/60 dark:bg-orange-900/40 px-2 py-0.5 rounded">
+                      {slot}
+                    </span>
+                    {item ? (
+                      <div className="mt-2.5 flex items-center gap-3">
+                        {item.recipes?.image_url && (
+                          <img
+                            src={item.recipes.image_url}
+                            alt={item.recipes.name}
+                            className="w-12 h-12 rounded-xl object-cover flex-shrink-0"
+                          />
+                        )}
+                        <div className="min-w-0 flex-1">
+                          <h4 className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">
+                            {item.recipes?.name}
+                          </h4>
+                          <span className="text-[10px] font-extrabold text-orange-600 dark:text-orange-400 mt-0.5 block">
+                            {item.recipes?.nutrition?.calories || 300} kcal
+                          </span>
+                        </div>
+                      </div>
+                    ) : (
+                      <p className="text-xs font-semibold text-zinc-400 dark:text-zinc-500 mt-2">
+                        No recipe planned for {slot}
+                      </p>
+                    )}
+                  </div>
+                  
+                  <div className="flex-shrink-0">
+                    {item ? (
+                      <button
+                        onClick={async () => {
+                          try {
+                            await apiFetch(`/api/meal-plans/${activePlan.id}/items/${item.id}`, {
+                              method: 'DELETE',
+                            });
+                            toast('Meal removed successfully!', 'success');
+                            loadPlannerData();
+                          } catch (err: any) {
+                            toast(err.message || 'Failed to remove meal', 'error');
+                          }
+                        }}
+                        className="p-2 text-zinc-450 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/20 rounded-xl transition-colors cursor-pointer"
+                        title="Remove recipe"
+                      >
+                        <Icons.Trash size={16} />
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          setActiveSlot({ day: selectedSummaryDay, slot });
+                          setIsAddOpen(true);
+                        }}
+                        className="py-2 px-3.5 bg-orange-50 hover:bg-orange-100 dark:bg-orange-950/30 text-orange-600 dark:text-orange-400 font-extrabold rounded-xl text-xs flex items-center gap-1.5 transition-all cursor-pointer"
+                      >
+                        <Icons.Plus size={12} /> Add
+                      </button>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Desktop 7-Column Layout Calendar grid (Hidden on mobile) */}
+          <div className="hidden md:block overflow-x-auto border border-zinc-200/60 dark:border-zinc-800/80 rounded-3xl bg-white dark:bg-zinc-900 shadow-sm">
             <div className="min-w-[850px] divide-y divide-zinc-100 dark:divide-zinc-800">
               
               {/* Grid Header Days */}
@@ -331,79 +439,62 @@ export default function Planner() {
               {/* Grid Rows Slots */}
               <div className="divide-y divide-zinc-100 dark:divide-zinc-800">
                 {mealSlots.map((slot) => (
-                  <div key={slot} className="relative">
-                    {/* Floating Side Badge */}
-                    <div className="absolute left-3 top-2 pointer-events-none select-none">
-                      <span className="text-[9px] font-black uppercase bg-zinc-100 dark:bg-zinc-800 text-zinc-500 px-2 py-0.5 rounded-md border border-zinc-200/50 dark:border-zinc-700/50">
-                        {slot}
-                      </span>
-                    </div>
+                  <div key={slot} className="grid grid-cols-7 divide-x divide-zinc-100 dark:divide-zinc-800">
                     
-                    <div className="grid grid-cols-7 divide-x divide-zinc-100 dark:divide-zinc-800 pt-6">
-                      {daysOfWeek.map((day) => {
-                        // Find item matching day and slot
-                        const item = planItems.find(
-                          (i: any) => i.day_of_week === day && i.meal_slot === slot
-                        );
+                    {daysOfWeek.map((day) => {
+                      const item = planItems.find(
+                        (pi: any) => pi.day_of_week === day && pi.meal_slot === slot
+                      );
 
-                        return (
-                          <div 
-                            key={day} 
-                            className="p-3 min-h-[120px] flex flex-col justify-center transition-all"
-                            onDragOver={(e) => e.preventDefault()}
-                            onDrop={(e) => handleDrop(e, day, slot)}
-                          >
-                            {item ? (
-                              <div 
-                                draggable
-                                onDragStart={(e) => handleDragStart(e, item, day, slot)}
-                                className="relative group bg-zinc-50 dark:bg-zinc-850 p-2.5 rounded-2xl border border-zinc-200/60 dark:border-zinc-800 flex flex-col justify-between text-left h-full cursor-grab active:cursor-grabbing hover:shadow-md transition-all duration-200"
-                              >
-                                {/* Remove button */}
-                                <button
-                                  onClick={() => handleRemoveRecipe(item.id)}
-                                  className="absolute -top-1.5 -right-1.5 w-5.5 h-5.5 bg-rose-500 text-white rounded-full flex items-center justify-center text-xs font-bold hover:bg-rose-600 shadow-sm cursor-pointer z-10 transition-transform hover:scale-105"
-                                >
-                                  ✕
-                                </button>
-                                
-                                <div className="space-y-1">
-                                  {item.recipes?.image_url && (
-                                    <img
-                                      src={item.recipes.image_url}
-                                      alt={item.recipes.name}
-                                      className="w-full h-14 object-cover rounded-xl mb-1.5"
-                                      draggable={false}
-                                    />
-                                  )}
-                                  <h4 className="text-[11px] font-bold leading-snug text-zinc-800 dark:text-zinc-200 line-clamp-2">
-                                    {item.recipes?.name || 'Recipe'}
-                                  </h4>
-                                </div>
-                                <span className="text-[10px] font-extrabold text-orange-600 dark:text-orange-400 mt-2 block">
-                                  {item.recipes?.nutrition?.calories || 300} kcal
-                                </span>
-                              </div>
-                            ) : (
+                      return (
+                        <div key={day} className="p-3 min-h-[120px] flex flex-col justify-center transition-all" onDragOver={(e) => e.preventDefault()} onDrop={(e) => handleDrop(e, day, slot)}>
+                          {item ? (
+                            <div 
+                              draggable
+                              onDragStart={(e) => handleDragStart(e, item, day, slot)}
+                              className="relative group bg-zinc-50 dark:bg-zinc-850 p-2.5 rounded-2xl border border-zinc-200/60 dark:border-zinc-800 flex flex-col justify-between text-left h-full cursor-grab active:cursor-grabbing hover:shadow-md transition-all duration-200"
+                            >
                               <button
-                                onClick={() => {
-                                  setActiveSlot({ day, slot });
-                                  setIsAddOpen(true);
-                                }}
-                                className="w-full h-16 rounded-2xl border border-dashed border-zinc-200 dark:border-zinc-800 hover:border-orange-500 hover:bg-orange-50/20 text-zinc-400 hover:text-orange-600 text-xs font-bold transition-all flex flex-col items-center justify-center gap-1 cursor-pointer"
+                                onClick={() => handleRemoveRecipe(item.id)}
+                                className="absolute -top-1.5 -right-1.5 w-5.5 h-5.5 bg-rose-500 text-white rounded-full flex items-center justify-center text-xs font-bold hover:bg-rose-600 shadow-sm cursor-pointer z-10 transition-transform hover:scale-105"
                               >
-                                <Icons.Plus size={14} />
-                                Add
+                                ✕
                               </button>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
+                              <div className="space-y-1">
+                                {item.recipes?.image_url && (
+                                  <img
+                                    src={item.recipes.image_url}
+                                    alt={item.recipes.name}
+                                    className="w-full h-14 object-cover rounded-xl mb-1.5"
+                                    draggable={false}
+                                  />
+                                )}
+                                <h4 className="text-[11px] font-bold leading-snug text-zinc-800 dark:text-zinc-200 line-clamp-2">
+                                  {item.recipes?.name || 'Recipe'}
+                                </h4>
+                              </div>
+                              <span className="text-[10px] font-extrabold text-orange-600 dark:text-orange-400 mt-2 block">
+                                {item.recipes?.nutrition?.calories || 300} kcal
+                              </span>
+                            </div>
+                          ) : (
+                            <button
+                              onClick={() => {
+                                setActiveSlot({ day, slot });
+                                setIsAddOpen(true);
+                              }}
+                              className="w-full h-16 rounded-2xl border border-dashed border-zinc-200 dark:border-zinc-800 hover:border-orange-500 hover:bg-orange-50/20 text-zinc-400 hover:text-orange-600 text-xs font-bold transition-all flex flex-col items-center justify-center gap-1 cursor-pointer"
+                            >
+                              <Icons.Plus size={14} />
+                              Add
+                            </button>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 ))}
               </div>
-
             </div>
           </div>
 

@@ -501,7 +501,7 @@ export default function Feed() {
 
       {/* Main Content Grid */}
       {loading ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {[1, 2, 3, 4, 5, 6].map((n) => (
             <div key={n} className="bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 rounded-3xl overflow-hidden shadow-sm flex flex-col gap-3 p-4 h-64 animate-pulse">
               <div className="w-full h-32 bg-zinc-200 dark:bg-zinc-800 rounded-2xl" />
@@ -512,7 +512,7 @@ export default function Feed() {
         </div>
       ) : recipes.length > 0 ? (
         <div>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {recipes.map((recipe) => (
               <div
                 key={recipe.id}

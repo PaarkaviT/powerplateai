@@ -193,7 +193,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
 
         {/* Mobile Navigation bar */}
         {!hideNavigation && (
-          <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200/50 dark:border-zinc-800/80 flex justify-around py-1 px-1 md:hidden shadow-2xl">
+          <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-100 dark:border-zinc-800/80 flex justify-between items-center py-1 px-2 md:hidden shadow-2xl">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;
@@ -201,14 +201,14 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`flex flex-col items-center gap-0.5 py-1.5 px-4 rounded-xl transition-all duration-200 ${
+                  className={`flex flex-col items-center gap-0.5 py-1.5 px-1 rounded-xl transition-all duration-200 flex-1 min-w-[48px] text-center ${
                     isActive
                       ? 'text-orange-600 dark:text-orange-400 font-black scale-105'
-                      : 'text-zinc-400 hover:text-zinc-900 dark:text-zinc-500 dark:hover:text-zinc-200'
+                      : 'text-zinc-400 hover:text-zinc-950 dark:text-zinc-500 dark:hover:text-zinc-200'
                   }`}
                 >
-                  <Icon size={20} />
-                  <span className="text-[10px] font-bold tracking-tight">{item.name}</span>
+                  <Icon size={18} />
+                  <span className="text-[9px] font-extrabold tracking-tight">{item.name}</span>
                 </Link>
               );
             })}
