@@ -302,11 +302,10 @@ export default function Profile() {
                 onChange={(e) => setActivityLevel(e.target.value)}
                 className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 focus:outline-none focus:ring-2 focus:ring-orange-500 dark:border-zinc-800 dark:bg-zinc-900 text-sm text-zinc-950 dark:text-zinc-50"
               >
-                <option value="sedentary">Sedentary (Little/no exercise)</option>
-                <option value="lightly_active">Lightly Active (Exercise 1-3 days/wk)</option>
-                <option value="moderately_active">Moderately Active (Exercise 3-5 days/wk)</option>
-                <option value="very_active">Very Active (Exercise 6-7 days/wk)</option>
-                <option value="extra_active">Extra Active (Heavy manual work)</option>
+                <option value="sedentary">Sedentary - Desk job, mostly sitting, little or no exercise</option>
+                <option value="lightly_active">Lightly Active - Desk job with light exercise or walking 1–3 days/week</option>
+                <option value="moderately_active">Moderately Active - Regular exercise 3–5 days/week or a job involving frequent walking/standing</option>
+                <option value="very_active">Highly Active - Physical job and/or intense exercise 6–7 days/week</option>
               </select>
             </div>
             <div>
@@ -335,7 +334,7 @@ export default function Profile() {
                 onChange={(e) => setDiet(e.target.value)}
                 className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 focus:outline-none focus:ring-2 focus:ring-orange-500 dark:border-zinc-800 dark:bg-zinc-900 text-sm text-zinc-950 dark:text-zinc-50"
               >
-                <option value="omnivore">Omnivore</option>
+                <option value="omnivore">Nonvegetarian</option>
                 <option value="vegetarian">Vegetarian</option>
                 <option value="vegan">Vegan</option>
                 <option value="keto">Keto</option>
@@ -507,7 +506,7 @@ export default function Profile() {
                 onChange={(e) => setFamDiet(e.target.value)}
                 className="w-full px-4 py-2 rounded-xl border border-zinc-250 focus:outline-none focus:ring-2 focus:ring-orange-500 dark:border-zinc-800 dark:bg-zinc-800 text-xs"
               >
-                <option value="omnivore">Omnivore</option>
+                <option value="omnivore">Nonvegetarian</option>
                 <option value="vegetarian">Vegetarian</option>
                 <option value="vegan">Vegan</option>
                 <option value="keto">Keto</option>

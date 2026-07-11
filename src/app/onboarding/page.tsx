@@ -46,10 +46,10 @@ export default function Onboarding() {
   ];
 
   const dietsList = [
-    { id: 'omnivore', label: 'Omnivore', desc: 'Balanced standard diet. No restrictions.', icon: '🍽️' },
+    { id: 'omnivore', label: 'Nonvegetarian', desc: 'Balanced standard diet. No restrictions.', icon: '🍽️' },
     { id: 'vegetarian', label: 'Vegetarian', desc: 'Plant-based with dairy. No meat.', icon: '🥦' },
     { id: 'vegan', label: 'Vegan', desc: 'Strictly plant-based. Zero animal products.', icon: '🌱' },
-    { id: 'keto', label: 'Keno', desc: 'High-fat, very low-carbohydrate focus.', icon: '🥑' },
+    { id: 'keto', label: 'Keto', desc: 'High-fat, very low-carbohydrate focus.', icon: '🥑' },
     { id: 'gluten-free', label: 'Gluten-Free', desc: 'Excludes wheat, barley, and gluten.', icon: '🌾' },
     { id: 'jain', label: 'Jain', desc: 'Strict vegetarian. No root vegetables (onion, garlic).', icon: '🧄' },
     { id: 'halal', label: 'Halal', desc: 'Enforces halal dietary rules.', icon: '🌙' },
@@ -272,11 +272,10 @@ export default function Onboarding() {
                       onChange={(e) => setFormData({ ...formData, activity_level: e.target.value })}
                       className="w-full px-4 py-2.5 rounded-xl border border-zinc-200 focus:outline-none focus:ring-2 focus:ring-orange-500 dark:border-zinc-800 dark:bg-zinc-800 text-sm text-zinc-950 dark:text-zinc-50"
                     >
-                      <option value="sedentary">Sedentary (desk job)</option>
-                      <option value="lightly_active">Lightly active (1-3 days/wk)</option>
-                      <option value="moderately_active">Moderately active (3-5 days/wk)</option>
-                      <option value="very_active">Very active (6-7 days/wk)</option>
-                      <option value="extra_active">Extra active (intense training)</option>
+                      <option value="sedentary">Sedentary - Desk job, mostly sitting, little or no exercise</option>
+                      <option value="lightly_active">Lightly Active - Desk job with light exercise or walking 1–3 days/week</option>
+                      <option value="moderately_active">Moderately Active - Regular exercise 3–5 days/week or a job involving frequent walking/standing</option>
+                      <option value="very_active">Highly Active - Physical job and/or intense exercise 6–7 days/week</option>
                     </select>
                   </div>
                   <div>
