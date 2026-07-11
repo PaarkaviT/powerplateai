@@ -249,7 +249,7 @@ export default function Contribute() {
               <span className="text-lg">✨</span>
               <div>
                 <h4 className="text-xs font-black text-orange-800 dark:text-orange-400 uppercase tracking-wide">AI Recipe Autofill</h4>
-                <p className="text-[10px] text-zinc-500">Enter a concept and let Gemini 2.5 Pro write the ingredients, steps, macros, and generate a matching AI food image!</p>
+                <p className="text-[10px] text-zinc-500">Enter a concept and let AI write the ingredients, steps, macros, and generate a matching AI food image!</p>
               </div>
             </div>
             <div className="flex gap-2">
