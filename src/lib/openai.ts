@@ -1,10 +1,11 @@
 import OpenAI from 'openai';
 import { supabase } from './supabase';
 
-const openaiKey = process.env.OPENAI_API_KEY;
+const geminiKey = process.env.GEMINI_API_KEY;
 
 export const openai = new OpenAI({
-  apiKey: openaiKey || 'dummy-key-for-build-validation',
+  apiKey: geminiKey || 'dummy-key-for-build-validation',
+  baseURL: 'https://generativelanguage.googleapis.com/v1beta/openai/',
 });
 
 export async function autoTagRecipe(
@@ -24,7 +25,7 @@ Ingredients: ${JSON.stringify(ingredients)}
 Steps: ${steps.join('\n')}`;
 
     const response = await openai.chat.completions.create({
-      model: 'gpt-4o-mini', // fast, cheap, and handles JSON mode perfectly
+      model: 'gemini-2.5-pro', // Using Gemini 2.5 Pro via OpenAI compatible endpoint
       messages: [
         { role: 'system', content: systemPrompt },
         { role: 'user', content: userContent },
@@ -90,7 +91,7 @@ Ingredients: ${JSON.stringify(ingredients)}
 Steps: ${steps.join('\n')}`;
 
   const response = await openai.chat.completions.create({
-    model: 'gpt-4o-mini',
+    model: 'gemini-2.5-pro',
     messages: [
       { role: 'system', content: systemPrompt },
       { role: 'user', content: userContent },

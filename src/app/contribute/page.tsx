@@ -41,6 +41,58 @@ export default function Contribute() {
   const [isAiLoading, setIsAiLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // AI Recipe Autofill States
+  const [aiConcept, setAiConcept] = useState('');
+  const [isAiGenerating, setIsAiGenerating] = useState(false);
+
+  const handleAiGenerateRecipe = async () => {
+    if (!aiConcept.trim()) {
+      toast('Please enter a recipe concept first!', 'error');
+      return;
+    }
+    setIsAiGenerating(true);
+    try {
+      const data = await apiFetch('/api/recipes/ai-generate', {
+        method: 'POST',
+        body: JSON.stringify({ concept: aiConcept }),
+      });
+
+      setName(data.name || '');
+      setDescription(data.description || '');
+      
+      if (data.ingredients && Array.isArray(data.ingredients)) {
+        setIngredients(data.ingredients);
+      }
+      if (data.steps && Array.isArray(data.steps)) {
+        setSteps(data.steps);
+      }
+      
+      setCalories(String(data.calories || '350'));
+      setProtein(String(data.protein_g || '20'));
+      setCarbs(String(data.carbs_g || '40'));
+      setFat(String(data.fat_g || '12'));
+      setSugar(String(data.sugar_g || '5'));
+      setSodium(String(data.sodium_mg || '300'));
+      
+      setDietaryTag(data.dietary_tag || 'omnivore');
+      setGlycemicIndex(data.glycemic_index || 'medium');
+      setBmiRange(data.bmi_range || 'all');
+      setGenderNote(data.gender_note || 'general');
+      
+      if (data.tags && Array.isArray(data.tags)) {
+        setTagsText(data.tags.join(', '));
+      }
+      
+      setImageUrl(data.image_url || '');
+
+      toast('Recipe and AI Image successfully generated!', 'success');
+    } catch (err: any) {
+      toast(err.message || 'Failed to auto-populate recipe details', 'error');
+    } finally {
+      setIsAiGenerating(false);
+    }
+  };
+
   // Dynamic ingredient modifiers
   const handleIngredientChange = (idx: number, field: string, val: string) => {
     const updated = [...ingredients];
@@ -191,6 +243,41 @@ export default function Contribute() {
         
         <form onSubmit={handleSubmit} className="space-y-6">
           
+          {/* AI Recipe Autofill Section */}
+          <div className="bg-orange-50/50 dark:bg-orange-950/10 border border-orange-200/50 dark:border-orange-900/30 rounded-2xl p-4 sm:p-5 space-y-3">
+            <div className="flex items-center gap-2">
+              <span className="text-lg">✨</span>
+              <div>
+                <h4 className="text-xs font-black text-orange-800 dark:text-orange-400 uppercase tracking-wide">AI Recipe Autofill</h4>
+                <p className="text-[10px] text-zinc-500">Enter a concept and let Gemini 2.5 Pro write the ingredients, steps, macros, and generate a matching AI food image!</p>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={aiConcept}
+                onChange={(e) => setAiConcept(e.target.value)}
+                placeholder="e.g., Vegan Sweet Potato Curry with Lentils"
+                className="flex-1 min-w-0 px-4 py-2.5 rounded-xl border border-zinc-200 focus:outline-none focus:ring-2 focus:ring-orange-500 dark:border-zinc-850 dark:bg-zinc-850 text-xs bg-white"
+              />
+              <button
+                type="button"
+                onClick={handleAiGenerateRecipe}
+                disabled={isAiGenerating}
+                className="px-4 py-2.5 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 disabled:opacity-50 text-white text-xs font-bold rounded-xl transition-all cursor-pointer shadow-xs shrink-0 flex items-center gap-1.5"
+              >
+                {isAiGenerating ? (
+                  <>
+                    <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    Generating...
+                  </>
+                ) : (
+                  <>Generate ✨</>
+                )}
+              </button>
+            </div>
+          </div>
+
           {/* Core Info */}
           <div className="space-y-4">
             <h3 className="text-sm font-black text-zinc-900 dark:text-zinc-50 border-b pb-2">1. General Information</h3>
