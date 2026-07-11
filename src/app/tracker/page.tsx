@@ -170,11 +170,20 @@ export default function Tracker() {
   const sugarStreakDays = historyData.filter(d => Number(d.total_sugar_g || 0) <= 35).length;
   const proteinGoalDays = historyData.filter(d => Number(d.total_protein_g || 0) >= 100).length;
 
+  const avgAchieved = (sugarStreakDays + proteinGoalDays) / 2;
+  let bannerGradient = 'from-orange-500 via-amber-550 to-orange-650 border-orange-400'; // Default orange (Moderate: 3-4 days)
+  
+  if (avgAchieved >= 5) {
+    bannerGradient = 'from-emerald-500 via-teal-550 to-emerald-650 border-emerald-400'; // Green (Healthy: 5+ days)
+  } else if (avgAchieved < 3) {
+    bannerGradient = 'from-rose-500 via-red-550 to-rose-650 border-rose-400'; // Red (Needs focus: 0-2 days)
+  }
+
   return (
     <div className="space-y-8 max-w-4xl mx-auto w-full pb-20">
       
       {/* 1. WEEKLY PROGRESS ACHIEVEMENTS BANNER */}
-      <div className="bg-gradient-to-tr from-orange-600 to-amber-650 border border-orange-500 rounded-3xl p-6 text-white shadow-md flex flex-col sm:flex-row gap-6 justify-between items-start sm:items-center">
+      <div className={`bg-gradient-to-tr ${bannerGradient} border rounded-3xl p-6 text-white shadow-md flex flex-col sm:flex-row gap-6 justify-between items-start sm:items-center`}>
         <div>
           <p className="text-[10px] font-black uppercase tracking-wider opacity-85">🏆 Weekly Progress Achievements</p>
           <h3 className="text-lg font-black mt-1">Healthy Habits Tracker</h3>
