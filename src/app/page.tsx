@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Icons } from '@/components/Icons';
-import { apiFetch, setAuthToken, getAuthToken } from '@/lib/api';
+import { apiFetch, setAuthToken, getAuthToken, clearAuthToken } from '@/lib/api';
 import { toast } from '@/components/Toast';
 
 export default function Home() {
@@ -27,7 +27,8 @@ export default function Home() {
           }
         })
         .catch(() => {
-          // Stale token, display login panels
+          // Stale token, clear it and display login panels
+          clearAuthToken();
           setCheckingAuth(false);
         });
     } else {
@@ -37,8 +38,14 @@ export default function Home() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !password) {
+    const cleanEmail = email.trim().toLowerCase();
+    if (!cleanEmail || !password) {
       toast('Please enter both email and password', 'error');
+      return;
+    }
+
+    if (password.length < 6) {
+      toast('Password must be at least 6 characters', 'error');
       return;
     }
 
@@ -48,16 +55,21 @@ export default function Home() {
     try {
       const data = await apiFetch(endpoint, {
         method: 'POST',
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email: cleanEmail, password }),
       });
 
-      if (isLogin) {
+      if (data.token) {
         setAuthToken(data.token);
         toast('Welcome to Power Plate!', 'success');
-        
-        // Query profile onboarding status to route correctly
-        const meData = await apiFetch('/api/auth/me');
-        if (meData.profile?.onboarding_complete) {
+
+        // Use profile from auth response if available, otherwise query /api/auth/me
+        let profile = data.profile;
+        if (profile === undefined) {
+          const meData = await apiFetch('/api/auth/me').catch(() => ({}));
+          profile = meData.profile;
+        }
+
+        if (profile?.onboarding_complete) {
           router.push('/feed');
         } else {
           router.push('/onboarding');

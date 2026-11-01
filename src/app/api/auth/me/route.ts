@@ -11,7 +11,7 @@ export async function GET(req: Request) {
     }
 
     // Fetch the profile for this user
-    const { data: profile, error } = await supabase
+    let { data: profile, error } = await supabase
       .from('profiles')
       .select('*')
       .eq('id', user.id)
@@ -19,6 +19,19 @@ export async function GET(req: Request) {
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 400 });
+    }
+
+    if (!profile) {
+      const { data: createdProfile } = await supabase
+        .from('profiles')
+        .upsert({
+          id: user.id,
+          email: user.email,
+          name: (user.email || 'user').split('@')[0],
+        })
+        .select('*')
+        .maybeSingle();
+      profile = createdProfile || null;
     }
 
     return NextResponse.json({
